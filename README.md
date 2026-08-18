@@ -1,17 +1,20 @@
-TabbyAPI Docker Container  
+# TabbyAPI Docker Container    
+default server port: 11966  
+endpoint (base url): http://0.0.0.0:11966/v1   
+
 ## Setup Instructions
-
-To clone this repository and Qwen3.8-27B-exl3 (3.00bpw), run:
-
+update .env file as required
 ```bash
-git clone --recurse-submodules --shallow-submodules JasdeepN/EXL3
+cp .env.template .env
 ```
 
-or if already cloned base repo
-
+Clone into models/ folder Qwen3.8-27B-exl3 (3.00bpw), run:
 ```bash
-git submodule update --init --recursive --depth 1
+git clone --branch 3.00bpw --depth 1 https://huggingface.co/turboderp/Qwen3.8-27B-exl3 models/Qwen3.8-27B-exl3
 ```
+
+other quants and models can also be used:  
+[Qwen 3.8 Quants](https://huggingface.co/turboderp/Qwen3.8-27B-exl3)
 
 ## Run Instructions
 
