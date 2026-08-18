@@ -1,0 +1,112 @@
+# Docker Compose for EXL3 models served via TabbyAPI (ExllamaV3 backend).
+
+services:
+  tabbyapi:
+    container_name: EXL3
+    build: .
+    image: ghcr.io/theroyallab/tabbyapi:latest
+    env_file:
+      - .env
+    restart: "${RESTART_POLICY:-no}"
+
+    runtime: nvidia
+
+    cap_add:
+      - IPC_LOCK
+      - SYS_NICE
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+    command: >-
+      main.py
+
+    volumes:
+      - ./models:/app/models 
+      - ./config.yml:/app/config.yml               
+
+    ports:
+      - "${HOST_PORT:-11966}:5000" # update to whatever port you want to expose.
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT:-5000}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: "${HEALTHCHECK_START_PERIOD:-60s}"
+
+
+# modifying config.yml is the prefered way to change settings
+# usage: main.py -h
+#   --config CONFIG
+#   --host HOST
+#   --port PORT]
+#   --disable-auth DISABLE_AUTH
+#   --disable-fetch-requests DISABLE_FETCH_REQUESTS
+#   --send-tracebacks SEND_TRACEBACKS
+#   --api-servers API_SERVERS [API_SERVERS ...]
+#   --sse-ping-interval SSE_PING_INTERVAL
+#   --log-prompt LOG_PROMPT
+#   --log-generation-params LOG_GENERATION_PARAMS
+#   --log-requests LOG_REQUESTS
+#   --log-chat-completion-requests LOG_CHAT_COMPLETION_REQUESTS
+#   --model-dir MODEL_DIR
+#   --inline-model-loading INLINE_MODEL_LOADING
+#   --use-dummy-models USE_DUMMY_MODELS
+#   --dummy-model-names DUMMY_MODEL_NAMES [DUMMY_MODEL_NAMES ...]
+#   --model-name MODEL_NAME
+#   --use-as-default USE_AS_DEFAULT [USE_AS_DEFAULT ...]
+#   --backend BACKEND
+#   --max-seq-len MAX_SEQ_LEN
+#   --cache-size CACHE_SIZE
+#   --cache-mode CACHE_MODE
+#   --tensor-parallel TENSOR_PARALLEL
+#   --tensor-parallel-backend TENSOR_PARALLEL_BACKEND
+#   --gpu-split-auto GPU_SPLIT_AUTO
+#   --autosplit-reserve AUTOSPLIT_RESERVE [AUTOSPLIT_RESERVE ...]
+#   --gpu-split GPU_SPLIT [GPU_SPLIT ...]
+#   --cpu-moe-offload-layers CPU_MOE_OFFLOAD_LAYERS
+#   --rope-scale ROPE_SCALE
+#   --rope-alpha ROPE_ALPHA
+#   --chunk-size CHUNK_SIZE
+#   --output-chunking OUTPUT_CHUNKING
+#   --max-batch-size MAX_BATCH_SIZE
+#   --prompt-template PROMPT_TEMPLATE
+#   --vision VISION
+#   --template-vars-default TEMPLATE_VARS_DEFAULT
+#   --template-vars-force TEMPLATE_VARS_FORCE
+#   --force-enable-thinking FORCE_ENABLE_THINKING
+#   --reasoning REASONING
+#   --reasoning-start-token REASONING_START_TOKEN
+#   --reasoning-end-token REASONING_END_TOKEN
+#   --start-in-reasoning START_IN_REASONING
+#   --tool-calls-in-reasoning TOOL_CALLS_IN_REASONING
+#   --tool-format TOOL_FORMAT
+#   --harmony HARMONY
+#   --muse-glimmer MUSE_GLIMMER
+#   --draft-mode DRAFT_MODE
+#   --draft-model-dir DRAFT_MODEL_DIR
+#   --draft-model-name DRAFT_MODEL_NAME
+#   --draft-rope-scale DRAFT_ROPE_SCALE
+#   --draft-rope-alpha DRAFT_ROPE_ALPHA
+#   --draft-cache-mode DRAFT_CACHE_MODE
+#   --draft-gpu-split DRAFT_GPU_SPLIT [DRAFT_GPU_SPLIT ...]
+#   --draft-num-tokens DRAFT_NUM_TOKENS
+#   --dynamic-draft DYNAMIC_DRAFT
+#   --ngram-match-min NGRAM_MATCH_MIN
+#   --lora-dir LORA_DIR
+#   --loras LORAS [LORAS ...]
+#   --embedding-model-dir EMBEDDING_MODEL_DIR
+#   --embeddings-device EMBEDDINGS_DEVICE
+#   --embedding-model-name EMBEDDING_MODEL_NAME
+#   --override-preset OVERRIDE_PRESET
+#   --sysmem-recurrent-cache SYSMEM_RECURRENT_CACHE
+#   --sysmem-kv-cache SYSMEM_KV_CACHE
+#   --cuda-malloc-async CUDA_MALLOC_ASYNC
+#   --unsafe-launch UNSAFE_LAUNCH
+#   --disable-request-streaming DISABLE_REQUEST_STREAMING
+#   --realtime-process-priority REALTIME_PROCESS_PRIORITY
+#   --seqlog SEQLOG
+#   --seqlog-server-url SEQLOG_SERVER_URL
+#   --seqlog-api-key SEQLOG_API_KEY

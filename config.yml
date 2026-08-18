@@ -1,0 +1,138 @@
+# TabbyAPI startup configuration for EXL3 model serving 
+
+model:
+  model_dir: /app/models
+  model_name: Qwen3.8-27B-exl3
+  max_seq_len: 131072
+  cache_size: 131072
+  cache_mode: 4,4
+  mem_fraction_static: 0.75
+  tensor_parallel_size: 1
+  seed: 42
+  inline_model_loading: false
+  cpu_moe_offload_layers: 999
+  tool_format: qwen3_5
+  vision: false
+  output_chunking: true
+
+## Options for draft models (speculative decoding)
+# draft_model:
+#   draft_mode: model
+#   draft_model_dir: /app/models
+#   draft_model_name: Qwen3.8-27B-exl3
+#   draft_rope_scale: 1.0
+#   draft_cache_mode: Q4
+  # draft_rope_alpha:
+  # draft_gpu_split: []
+  # draft_num_tokens: 
+  # dynamic_draft:
+  # ngram_match_min: 2
+  
+## Global memory settings
+memory:
+ sysmem_recurrent_cache: 4096
+ sysmem_kv_cache: 8192
+ # cuda_maloc_async: false
+
+# Options for networking
+network:
+  host: 0.0.0.0
+  port: 5000
+  disable_auth: true
+  api_servers: ["OAI"]
+#   disable_fetch_requests: false
+#   send_tracebacks: false
+#   sse_ping_interval: 15
+# auxiliary:
+#   compression:
+#     model: Qwen3.8-27B-exl3  # Change this to a model supporting 102k context
+
+## Options for logging
+# logging:
+#   log_prompt: false
+#   log_generation_params: false
+#   log_requests: false
+#   log_chat_completion_requests: false
+
+# model:
+#   model_dir: models
+#   inline_model_loading: false
+#   use_dummy_models: false
+#   dummy_model_names: ["gpt-3.5-turbo"]
+#   model_name:
+#   use_as_default: []
+#   backend:
+#   max_seq_len:
+#   cache_size:
+#   cache_mode: FP16
+#   tensor_parallel: false
+#   tensor_parallel_backend: native
+#   gpu_split_auto: true
+#   autosplit_reserve: [96]
+#   gpu_split: []
+#   cpu_moe_offload_layers:
+#   rope_scale: 1.0
+#   rope_alpha:
+#   chunk_size: 2048
+#   output_chunking: true
+#   max_batch_size:
+#   prompt_template:
+#   vision: false
+#   template_vars_default: {}
+#   template_vars_force: {}
+#   reasoning: false
+#   reasoning_start_token: "<think>"
+#   reasoning_end_token: "</think>"
+#   start_in_reasoning: auto
+#   tool_calls_in_reasoning: true
+#   reasoning_budget_tokens:
+#   reasoning_budget_message:
+#   tool_format:
+#   harmony:
+#   muse_glimmer:
+ 
+## Options for draft models (speculative decoding)
+# This will use more VRAM!
+# draft_model:
+#   draft_mode: model
+#   draft_model_dir: models
+#   draft_model_name:
+#   draft_rope_scale: 1.0
+#   draft_rope_alpha:
+#   draft_cache_mode: FP16
+#   draft_gpu_split: []
+#   draft_num_tokens:
+#   dynamic_draft:
+#   ngram_match_min: 2
+
+## Options for Sampling
+# sampling:
+#   override_preset: safe_defaults
+
+## Options for Loras
+# lora:
+#   lora_dir: loras
+  #   loras:
+
+## Options for embedding models and loading.
+# NOTE: Embeddings requires the "extras" feature to be installed
+# Install it via "pip install .[extras]"
+# embeddings:
+#   embedding_model_dir: models
+#   embeddings_device: cpu
+#   embedding_model_name:
+
+## Global memory settings
+# memory:
+#  sysmem_recurrent_cache: 4096
+#  sysmem_kv_cache: 32768
+#  cuda_maloc_async: false
+
+## Options for development and experimentation
+# developer:
+#   unsafe_launch: false
+#   disable_request_streaming: false
+#   realtime_process_priority: false
+#   seqlog: false
+#   seqlog_server_url: http://localhost:5341
+#   seqlog_api_key:

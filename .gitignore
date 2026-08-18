@@ -1,0 +1,4 @@
+.env
+
+!models/README.md
+models/*
